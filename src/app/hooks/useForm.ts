@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 
 interface ValidationRule {
     required?: boolean;
-    validate?: (value: any) => boolean;
+    validate?: (value: unknown) => boolean;
     message?: string;
 }
 
@@ -14,7 +14,7 @@ interface UseFormProps<T> {
     onSubmit: (values: T) => void;
 }
 
-export const useForm = <T extends Record<string, any>>({
+export const useForm = <T extends Record<string, unknown>>({
     initialValues,
     validations,
     onSubmit,
@@ -27,7 +27,7 @@ export const useForm = <T extends Record<string, any>>({
         setValues((prev) => ({ ...prev, [name]: value }));
     }, []);
 
-    const setValueByName = useCallback((name: keyof T, value: any) => {
+    const setValueByName = useCallback((name: keyof T, value: unknown) => {
         setValues((prev) => ({ ...prev, [name]: value }));
     }, []);
 
