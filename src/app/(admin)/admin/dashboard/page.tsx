@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -63,9 +63,7 @@ export default function DashboardPage() {
 
     const pagination = useMemo(() => ({ pageIndex, pageSize }), [pageIndex, pageSize]);
 
-    const fetchLeads = async (page: number, limit: number, search: string) => {
-        showLoader();
-
+    const fetchLeads = useCallback(async (page: number, limit: number, search: string) => {
         setIsLoading(true);
 
         try {
@@ -77,7 +75,7 @@ export default function DashboardPage() {
             });
 
             setData(response.data);
-        } catch (error) {
+        } catch (_error) {
             toast.error('Sessão expirada. Faça login novamente.');
 
             localStorage.removeItem('authToken');
@@ -85,14 +83,12 @@ export default function DashboardPage() {
             router.push('/login');
         } finally {
             setIsLoading(false);
-
-            hideLoader();
         }
-    };
+    }, [router]);
 
     useEffect(() => {
         fetchLeads(pageIndex, pageSize, debouncedSearchTerm);
-    }, [pageIndex, pageSize, debouncedSearchTerm]);
+    }, [pageIndex, pageSize, debouncedSearchTerm, fetchLeads]);
 
     const handleDelete = async () => {
         if (!leadToDelete) return;
@@ -109,7 +105,7 @@ export default function DashboardPage() {
             toast.success(`Lead "${leadToDelete.nome}" deletado com sucesso!`);
 
             fetchLeads(pageIndex, pageSize, debouncedSearchTerm); // recarrega os dados
-        } catch (error) {
+        } catch (_error) {
             toast.error('Erro ao deletar lead.');
         } finally {
             setIsDeleting(false);
