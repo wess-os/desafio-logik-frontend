@@ -68,7 +68,7 @@ export default function LeadDetailPage() {
                 });
 
                 setLead(response.data);
-            } catch (error) {
+            } catch (_error) {
                 toast.error('Não foi possível carregar os detalhes do lead.');
 
                 router.push('/admin/dashboard');

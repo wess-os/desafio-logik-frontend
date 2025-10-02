@@ -56,7 +56,7 @@ export default function EditLeadPage() {
                 toast.success('Lead atualizado com sucesso!');
 
                 router.push('/admin/dashboard');
-            } catch (error) {
+            } catch (_error) {
                 toast.error('Erro ao atualizar lead.');
             } finally {
                 setIsSubmitting(false);
@@ -85,7 +85,7 @@ export default function EditLeadPage() {
                 };
 
                 setValues(formattedData);
-            } catch (error) {
+            } catch (_error) {
                 toast.error('Lead não encontrado.');
 
                 router.push('/admin/dashboard');
